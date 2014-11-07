@@ -1,0 +1,69 @@
+;
+; Keil - An ARM Company
+; Communication Device Class driver installation file
+;
+
+[Version]
+Signature="$Windows NT$"
+Class=Ports
+ClassGuid={4D36E978-E325-11CE-BFC1-08002BE10318}
+Provider=%Keil%
+DriverVer=11/22/2011,5.2.0.0
+CatalogFile.NTx86=mcb2300-vcom_x86.cat
+CatalogFile.NTAMD64=mcb2300-vcom_amd64.cat
+
+[Manufacturer]
+%Keil%=DeviceList,ntamd64
+
+[DeviceList]
+%DESCRIPTION%=MCB2300USB, USB\VID_c251&PID_1705
+%COMPOSITE0% =MCB2300USB, USB\VID_c251&PID_1705&MI_00
+%COMPOSITE2% =MCB2300USB, USB\VID_c251&PID_1705&MI_02
+
+[DeviceList.ntamd64]
+%DESCRIPTION%=MCB2300USB, USB\VID_c251&PID_1705
+%COMPOSITE0% =MCB2300USB, USB\VID_c251&PID_1705&MI_00
+%COMPOSITE2% =MCB2300USB, USB\VID_c251&PID_1705&MI_02
+
+;------------------------------------------------------------------------------
+;  Installation
+;------------------------------------------------------------------------------
+
+[SourceDisksFiles]
+
+[SourceDisksNames]
+
+[DestinationDirs]
+FakeModemCopyFileSection=12
+DefaultDestDir=12
+
+[MCB2300USB]
+include=mdmcpq.inf
+CopyFiles=FakeModemCopyFileSection
+AddReg=MCB2300USB.AddReg
+
+[MCB2300USB.AddReg]
+HKR,,DevLoader,,*ntkern
+HKR,,NTMPDriver,,usbser.sys
+HKR,,EnumPropPages32,,"MsPorts.dll,SerialPortPropPageProvider"
+
+[MCB2300USB.Services]
+AddService=usbser, 0x00000002, DriverService
+
+[DriverService]
+DisplayName=%DRIVER.SVC%
+ServiceType=1
+StartType=3
+ErrorControl=1
+ServiceBinary=%12%\usbser.sys
+
+;------------------------------------------------------------------------------
+;  String Definitions
+;------------------------------------------------------------------------------
+
+[Strings]
+Keil       = "Keil - An ARM Company"
+DRIVER.SVC = "MCB2300 USB VCom Driver"
+DESCRIPTION= "MCB2300 USB VCom Port"
+COMPOSITE0 = "MCB2300 USB VCom Port"
+COMPOSITE2 = "MCB2300 USB VCom Port"
